@@ -13,11 +13,11 @@ class Cart(models.Model):
 class CartItem(models.Model):
     product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
     cart = models.ForeignKey(Cart, null=True, on_delete=models.SET_NULL)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=0)
     active = models.BooleanField(default=True)
 
     def sub_total(self):
         return self.product.price * self.quantity
 
     def __str__(self):
-        return self.product
+        return self.product.name
