@@ -18,43 +18,50 @@
                 </tr>
               </thead>
               <tbody>
-                {% for item in cart_items %}
-                  <tr class="cart-item" data-id="{{ item.id }}">
-                    <td>
-                      <figure class="itemside align-items-center">
-                        <div class="aside">
-                          <img src="{{ item.product.image.url }}" class="img-fluid img-sm" />
+                {% if cart_items %}
+                  {% for item in cart_items %}
+                    <tr class="cart-item" data-id="{{ item.id }}">
+                      <td>
+                        <figure class="itemside align-items-center">
+                          <div class="aside">
+                            <img src="{{ item.product.image.url }}" class="img-fluid img-sm" />
+                          </div>
+                          <figcaption class="info">
+                            <a href="{{ item.product.get_absolute_url }}" class="title text-dark">{{ item.product.name }}</a>
+                            <p class="text-muted small">{{ item.product.description }}</p>
+                          </figcaption>
+                        </figure>
+                      </td>
+                      <td>
+                        <div class="col">
+                          <div class="input-group input-spinner">
+                            <div class="input-group-prepend">
+                              <button class="btn btn-light button-minus" data-id="{{ item.id }}" type="button"><i class="fa fa-minus"></i></button>
+                            </div>
+                            <input type="text" class="form-control quantity-input" data-id="{{ item.id }}" value="{{ item.quantity }}" />
+                            <div class="input-group-append">
+                              <button class="btn btn-light button-plus" data-id="{{ item.id }}" type="button"><i class="fa fa-plus"></i></button>
+                            </div>
+                          </div> <!-- input-group.// -->
+                        </div> <!-- col.// -->
+                      </td>
+                      <td>
+                        <div class="price-wrap">
+                          <var class="price" id="subtotal-{{ item.id }}">$ {{ item.sub_total }}</var>
+                          <small class="text-muted">{{ item.product.price }} each</small>
                         </div>
-                        <figcaption class="info">
-                          <a href="{{ item.product.get_absolute_url }}" class="title text-dark">{{ item.product.name }}</a>
-                          <p class="text-muted small">{{ item.product.description }}</p>
-                        </figcaption>
-                      </figure>
-                    </td>
-                    <td>
-                      <div class="col">
-                        <div class="input-group input-spinner">
-                          <div class="input-group-prepend">
-                            <button class="btn btn-light button-minus" data-id="{{ item.id }}" type="button"><i class="fa fa-minus"></i></button>
-                          </div>
-                          <input type="text" class="form-control quantity-input" data-id="{{ item.id }}" value="{{ item.quantity }}" />
-                          <div class="input-group-append">
-                            <button class="btn btn-light button-plus" data-id="{{ item.id }}" type="button"><i class="fa fa-plus"></i></button>
-                          </div>
-                        </div> <!-- input-group.// -->
-                      </div> <!-- col.// -->
-                    </td>
-                    <td>
-                      <div class="price-wrap">
-                        <var class="price" id="subtotal-{{ item.id }}">$ {{ item.sub_total }}</var>
-                        <small class="text-muted">{{ item.product.price }} each</small>
-                      </div>
-                    </td>
-                    <td class="text-right">
-                      <button class="btn btn-danger remove-item" data-id="{{ item.id }}" id="remove-{{ item.id }}">Remove</button>
-                    </td>
-                  </tr>
-                {% endfor %}
+                      </td>
+                      <td class="text-right">
+                        <button class="btn btn-danger remove-item" data-id="{{ item.id }}" id="remove-{{ item.id }}">Remove</button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% endif %}
+                <tr class="{% if cart_items %}d-none{% endif %} empty-cart-message">
+                  <td colspan="4" class="text-center text-muted">
+                    <div class="alert alert-info" role="alert">Your cart is currently empty.</div>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div> <!-- card.// -->
@@ -78,8 +85,12 @@
               <p class="text-center mb-3">
                 <img src="{% static 'images/misc/payments.png' %}" height="26" />
               </p>
-              <a href="./place-order.html" class="btn btn-primary btn-block">Checkout</a>
-              <a href="./store.html" class="btn btn-light btn-block">Continue Shopping</a>
+              {% if cart_items %}
+                <a href="./place-order.html" class="btn btn-primary btn-block" id="checkout-button">Checkout</a>
+              {% else %}
+                <button href="#" class="btn btn-primary btn-block" disabled aria-disabled="true">Checkout</button>
+              {% endif %}
+              <a href="{% url 'store:store' %}" class="btn btn-light btn-block">Continue Shopping</a>
             </div> <!-- card-body.// -->
           </div> <!-- card.// -->
         </aside> <!-- col.// -->
