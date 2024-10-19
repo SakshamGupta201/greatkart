@@ -11,6 +11,7 @@ class ProductAdmin(admin.ModelAdmin):
         "updated_at",
         "is_available",
     )
+    search_fields = ("name", "category__name")
     prepopulated_fields = {"slug": ("name",)}
 
 

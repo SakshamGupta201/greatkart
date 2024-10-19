@@ -14,8 +14,8 @@
             <article class="gallery-wrap">
               <div class="img-big-wrap">
                 <a href="#"><img src="{{ product.image.url }}" alt="{{ product.name }}" /></a>
-              </div> <!-- img-big-wrap.// -->
-            </article> <!-- gallery-wrap .end// -->
+              </div>
+            </article>
           </aside>
           <main class="col-md-6 border-left">
             <article class="content-body">
@@ -48,7 +48,12 @@
                 </div>
               </div> <!-- row.// -->
               <hr />
-              <a href="#" class="btn btn-primary"><span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i></a>
+              {% if product.is_available and product.stock >= 0 %}
+                {{ product.stock }} in stock
+                <a href="#" class="btn btn-primary"><span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i></a>
+              {% else %}
+                <button class="btn btn-block btn-secondary" disabled>Out of stock</button>
+              {% endif %}
             </article> <!-- product-info-aside .// -->
           </main> <!-- col.// -->
         </div> <!-- row.// -->
