@@ -7,7 +7,7 @@ import Product
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("home.urls")),
-    path("products/", include("Product.urls")),
+    path("product/", include("Product.urls")),
     path("store/", include("store.urls")),
 ]
 
