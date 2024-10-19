@@ -19,14 +19,14 @@
               </thead>
               <tbody>
                 {% for item in cart_items %}
-                  <tr>
+                  <tr data-id="cart-item-{{ item.id }}">
                     <td>
                       <figure class="itemside align-items-center">
                         <div class="aside">
                           <img src="{{ item.product.image.url }}" class="img-fluid img-sm" />
                         </div>
                         <figcaption class="info">
-                          <a href="#" class="title text-dark">{{ item.product.name }}</a>
+                          <a href="{{ item.product.get_absolute_url }}" class="title text-dark">{{ item.product.name }}</a>
                           <p class="text-muted small">{{ item.product.description }}</p>
                         </figcaption>
                       </figure>
@@ -35,20 +35,20 @@
                       <div class="col">
                         <div class="input-group input-spinner">
                           <div class="input-group-prepend">
-                            <button class="btn btn-light" type="button" id="button-plus"><i class="fa fa-minus"></i></button>
+                            <button class="btn btn-light button-minus" data-id="{{ item.id }}" type="button"><i class="fa fa-minus"></i></button>
                           </div>
-                          <input type="text" class="form-control" value="{{ item.quantity }}" />
+                          <input type="text" class="form-control quantity-input" data-id="{{ item.id }}" value="{{ item.quantity }}" />
                           <div class="input-group-append">
-                            <button class="btn btn-light" type="button" id="button-minus"><i class="fa fa-plus"></i></button>
+                            <button class="btn btn-light button-plus" data-id="{{ item.id }}" type="button"><i class="fa fa-plus"></i></button>
                           </div>
                         </div> <!-- input-group.// -->
                       </div> <!-- col.// -->
                     </td>
                     <td>
                       <div class="price-wrap">
-                        <var class="price">{{ item.total_price }}</var>
+                        <var class="price" id="subtotal-{{ item.id }}">$ {{ item.sub_total }}</var>
                         <small class="text-muted">{{ item.product.price }} each</small>
-                      </div> <!-- price-wrap .// -->
+                      </div>
                     </td>
                     <td class="text-right">
                       <a href="" class="btn btn-danger">Remove</a>
@@ -64,15 +64,15 @@
             <div class="card-body">
               <dl class="dlist-align">
                 <dt>Total price:</dt>
-                <dd class="text-right">$69.97</dd>
+                <dd class="text-right" id="total-price">${{ total_price }}</dd>
               </dl>
               <dl class="dlist-align">
                 <dt>Tax:</dt>
-                <dd class="text-right">$10.00</dd>
+                <dd class="text-right" id="tax">$ {{ tax }}</dd>
               </dl>
               <dl class="dlist-align">
                 <dt>Total:</dt>
-                <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
+                <dd class="text-right text-dark b" id="grand-total"><strong>$ {{ grand_total }}</strong></dd>
               </dl>
               <hr />
               <p class="text-center mb-3">
@@ -88,4 +88,8 @@
     </div> <!-- container .// -->
   </section>
   <!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="{% static 'js/cart.js' %}"></script>
 {% endblock %}
