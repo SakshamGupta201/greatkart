@@ -76,4 +76,19 @@ def update_cart_item_quantity(request, item_id):
 def remove_cart_item(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id)
     cart_item.delete()
-    return redirect("cart:cart")
+    sub_total = cart_item.sub_total()
+    total = float(
+        sum(
+            cart_item.product.price * cart_item.quantity
+            for cart_item in CartItem.objects.filter(
+                cart__cart_id=_get_cart_id(request)
+            )
+        )
+    )
+    return JsonResponse(
+        {
+            "success": True,
+            "sub_total": sub_total,
+            "total": total,
+        }
+    )

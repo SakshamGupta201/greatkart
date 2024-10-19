@@ -19,7 +19,7 @@
               </thead>
               <tbody>
                 {% for item in cart_items %}
-                  <tr data-id="cart-item-{{ item.id }}">
+                  <tr class="cart-item" data-id="{{ item.id }}">
                     <td>
                       <figure class="itemside align-items-center">
                         <div class="aside">
@@ -51,7 +51,7 @@
                       </div>
                     </td>
                     <td class="text-right">
-                      <a href="" class="btn btn-danger">Remove</a>
+                      <button class="btn btn-danger remove-item" data-id="{{ item.id }}" id="remove-{{ item.id }}">Remove</button>
                     </td>
                   </tr>
                 {% endfor %}
