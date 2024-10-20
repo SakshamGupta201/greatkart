@@ -1,5 +1,7 @@
 from django.views.generic import ListView
 from Product.models import Product
+from cart.models import CartItem
+from cart.views import _get_cart_id
 
 
 class ProductList(ListView):
@@ -16,7 +18,11 @@ class ProductDetail(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            print(self.kwargs)
+            in_cart = CartItem.objects.filter(
+                cart__cart_id=_get_cart_id(self.request),
+                product__pk=self.kwargs["pk"],
+            ).exists()
+            context["in_cart"] = in_cart
             context["product"] = Product.objects.get(pk=self.kwargs["pk"])
         except Product.DoesNotExist:
             context["product"] = None

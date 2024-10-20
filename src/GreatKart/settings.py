@@ -73,6 +73,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "category.context_preprocessors.menu_links",
                 "category.context_preprocessors.price_options",
+                "cart.context_preprocessors.counter",
             ],
         },
     },
