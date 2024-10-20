@@ -1,6 +1,6 @@
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
-from Product.models import Product
+from Product.models import Product, Variation
 from cart.models import Cart, CartItem
 
 
@@ -33,10 +33,25 @@ def _calculate_totals(cart_items):
 
 def add_to_cart(request, product_slug):
     product = get_object_or_404(Product, slug=product_slug)
+    variation_products = []
+    if request.method == "POST":
+        for key, value in request.POST.items():
+            print(f"{key}: {value}")
+            try:
+                variation = Variation.objects.get(
+                    product=product, category__iexact=key, value=value
+                )
+                variation_products.append(variation)
+            except Variation.DoesNotExist:
+                continue
+
     cart_id = _get_cart_id(request)
     cart, _ = Cart.objects.get_or_create(cart_id=cart_id)
 
     cart_item, created = CartItem.objects.get_or_create(product=product, cart=cart)
+    if variation_products:
+        cart_item.variation.clear()
+        cart_item.variation.set(variation_products)
     if created:
         cart_item.quantity = 1
     else:

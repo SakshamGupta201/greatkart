@@ -28,7 +28,13 @@
                           </div>
                           <figcaption class="info">
                             <a href="{{ item.product.get_absolute_url }}" class="title text-dark">{{ item.product.name }}</a>
-                            <p class="text-muted small">{{ item.product.description }}</p>
+                            <p class="text-muted small">
+                              {% if item.variation.all %}
+                                {% for variation in item.variation.all %}
+                                  {{ variation.category|capfirst }}: {{ variation.value|capfirst }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                              {% endif %}
+                            </p>
                           </figcaption>
                         </figure>
                       </td>

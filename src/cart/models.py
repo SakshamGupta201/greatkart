@@ -1,5 +1,5 @@
 from django.db import models
-from Product.models import Product
+from Product.models import Product, Variation
 
 
 class Cart(models.Model):
@@ -12,6 +12,7 @@ class Cart(models.Model):
 
 class CartItem(models.Model):
     product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
+    variation = models.ManyToManyField(Variation, blank=True)
     cart = models.ForeignKey(Cart, null=True, on_delete=models.SET_NULL)
     quantity = models.IntegerField(default=0)
     active = models.BooleanField(default=True)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product
+from Product.models import Product, Variation
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -15,4 +15,11 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 
+class VariationAdmin(admin.ModelAdmin):
+    list_display = ("product", "category", "value", "active")
+    list_editable = ("active",)
+    list_filter = ("product", "category", "value", "active")
+
+
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Variation, VariationAdmin)
