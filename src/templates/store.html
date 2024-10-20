@@ -123,10 +123,10 @@
                         <span class="price">{{ product.price }}</span>
                       </div> <!-- price-wrap.// -->
                     </div>
-                    {% if product.is_available and product.stock >= 0 %}
+                    {% if product.is_available and product.stock > 0 %}
                       <a href="{% url 'cart:add_to_cart' product.slug %}" class="btn btn-block btn-primary">Add to cart</a>
                     {% else %}
-                      <button class="btn btn-block btn-secondary" disabled>Out of stock</button>
+                      <a href="{{ product.get_absolute_url }}" class="btn btn-block btn-primary">View Detail</a>
                     {% endif %}
                   </figcaption>
                 </figure>

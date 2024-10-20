@@ -6,13 +6,13 @@ from cart.views import _get_cart_id
 
 class ProductList(ListView):
     template_name = "index.html"
-    queryset = Product.objects.all().filter(is_available=True)
+    queryset = Product.objects.all()
     context_object_name = "products"
 
 
 class ProductDetail(ListView):
     template_name = "product_detail.html"
-    queryset = Product.objects.all().filter(is_available=True)
+    queryset = Product.objects.all()
     context_object_name = "product"
 
     def get_context_data(self, **kwargs):
