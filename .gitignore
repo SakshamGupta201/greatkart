@@ -31,7 +31,6 @@ media/
 
 # Static files
 staticfiles/
-static/
 
 # Local development settings
 local_settings.py
